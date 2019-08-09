@@ -17,17 +17,17 @@ app.use(express.static(path.join(__dirname, '../public')));
 
 
 
-app.get('/', 
+app.get('/',
 (req, res) => {
   res.render('index');
 });
 
-app.get('/create', 
+app.get('/create',
 (req, res) => {
   res.render('index');
 });
 
-app.get('/links', 
+app.get('/links',
 (req, res, next) => {
   models.Links.getAll()
     .then(links => {
@@ -38,7 +38,7 @@ app.get('/links',
     });
 });
 
-app.post('/links', 
+app.post('/links',
 (req, res, next) => {
   var url = req.body.url;
   if (!models.Links.isValidUrl(url)) {
@@ -78,6 +78,24 @@ app.post('/links',
 // Write your authentication routes here
 /************************************************************/
 
+
+app.get("/signup", (req,res) => {
+  console.log("you are in the signup page!")
+  res.render('signup');
+});
+
+app.post("/signup", (req, res) => {
+  var username = req.body.username;
+  var password = req.body.password;
+  models.Users.create({ username, password})
+    .then(() => res.status(201).send("it worked fam!!!"))
+    .catch((err) => res.status(401).send(err))
+})
+
+app.get("/login", (req,res) => {
+  console.log("you are in the login page!")
+  res.render('login');
+});
 
 
 /************************************************************/
